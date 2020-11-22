@@ -1,0 +1,71 @@
+{% extends 'adminbase.html' %}
+
+{% block title %}
+Admin | ProjectWD
+{% endblock %}
+
+{% block content %}
+
+<div class='container-sm'>
+<h1>Admin Interface</h1>
+</div>
+<!--Divider-->
+<br>
+<div class="h-divider">
+</div>
+<!--Delete standard user-->
+<div class='container'>
+<h4>Delete User</h4>
+<form action="/admin/action" method="POST">
+  <input type="hidden" name="actionType" value="DELUSER">
+  <div class='form-group'>
+    <label for="user"><h6>Username: </h6></label>
+    <input type="text" class="form-control" name="deluser" placeholder="Enter username" id="user">
+    </div>
+    <button type="submit" class="btn btn-warning">Delete</button>
+  </form>
+</div>
+<!--Divider-->
+<br>
+<div class="h-divider">
+</div>
+<!--Add admin user-->
+<div class='container'>
+<h4>Add Admin</h4>
+<form action="/admin/action" method="POST">
+  <input type="hidden" name="actionType" value="ADDADMIN">
+  <div class='form-group'>
+    <label for="user"><h6>Username: </h6></label>
+    <input type="text" class="form-control" name="adminuser" placeholder="Enter username" id="user">
+    </div>
+    <div class='form-group'>
+      <label for="pass"><h6>Password: </h6></label>
+      <input type="password" class="form-control" name="adminpassword" placeholder="Enter password" id="pass">
+      </div>
+    <button type="submit" class="btn btn-success">Add</button>
+  </form>
+</div>
+<!--Divider-->
+<br>
+<div class="h-divider">
+</div>
+<!--Delete admin-->
+<div class='container'>
+<h4>Delete Admin</h4>
+<form action="/admin/action" method="POST">
+  <input type="hidden" name="actionType" value="DELADMIN">
+  <div class='form-group'>
+    <label for="user"><h6>Username: </h6></label>
+    <input type="text" class="form-control" name="adminuser" placeholder="Enter username" id="user">
+    </div>
+    <button type="submit" class="btn btn-danger">DELETE</button>
+  </form>
+</div>
+
+<!--Divider-->
+<br>
+<div class="h-divider">
+</div>
+
+
+{% endblock %}

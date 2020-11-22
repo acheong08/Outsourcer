@@ -1,0 +1,31 @@
+{% extends 'storebase.html' %}
+{% block title %}
+Home | ProjectWD
+{% endblock %}
+{% block heading %}
+<div class='container'>
+<center>
+<h1 class='text-primary'>Home</h1>
+</center>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class='flex-container'>
+{% for item in items %}
+<div>
+<center>
+  <div class='container' id='itempic'>
+<img src="/static/img/{{item['pic']}}" id='constrainpic'/>
+</div>
+</center>
+<center><h4 class="itemtitle">{{item['name']}}</h4></center>
+<div class='iteminfo'>
+<p>{{item['details']}}</p>
+</div>
+<h6 id='code'>Code: {{item['id']}}</h6>
+<h6 id='price'>${{item['price']}}</h6>
+</div>
+{% endfor %}
+  </div>
+{% endblock %}

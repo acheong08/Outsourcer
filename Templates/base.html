@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Required css -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {% block css %} {% endblock %}
+<title>{% block title %} {% endblock %}</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-md navbar-light bg-light">
+  <ul class="nav nav-tabs">
+ <li class="nav-item">
+   <h5 class="navbar-brand" href="#">Project WD</h5>
+ </li>
+ <li class="nav-item">
+   <a class="nav-link" href="#">Home</a>
+ </li>
+ <li class="nav-item">
+   <a class="nav-link" href="#">About</a>
+ </li>
+</ul>
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item">
+      <a class="nav-link" href="/">Login</a>
+      </li>
+  <li class="nav-item">
+      <a class="nav-link" href="/signup">Signup</a>
+      </li>
+  </ul>
+</nav>
+<div class="container">
+  {% for message in get_flashed_messages() %}
+  <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+  {% block content %} {% endblock %}
+
+</div>
+  </body>
