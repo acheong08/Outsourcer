@@ -8,7 +8,7 @@ import hashlib
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'c40a650584b50cb7d928f44d58dcaffc'
 def getpass(username):
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('accounts.db')
     cursor = conn.cursor()
     result = str(cursor.execute('SELECT password FROM accounts WHERE username = ?',
                             (username,)).fetchone())
@@ -16,19 +16,39 @@ def getpass(username):
     return result
 
 def getitems():
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('items.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def getcats():
+    conn = sqlite3.connect('categories.db')
     conn.row_factory = sqlite3.Row
     return conn
 
 @app.route('/')
 def index():
     if 'username' in session:
-        conn = getitems()
-        items = conn.execute('SELECT * FROM items').fetchall()
-        conn.close()
-        return render_template('index.html', items=items)
+        conn = getcats()
+        cats = conn.execute('SELECT * FROM categories').fetchall()
+        conn.close
+        return render_template('home.html', account=session['username'], categories=cats)
     else:
         return render_template('login.html')
+
+@app.route('/shop')
+def shop():
+        if 'username' in session:
+            conn = getitems()
+            items = conn.execute('SELECT * FROM items').fetchmany(5)
+            conn.close()
+            return render_template('store.html', items=items, categories=cats)
+        else:
+            return redirect(url_for('index'))
+@app.route('/shop/<int:cat_id>')
+def shopcat(cat_id):
+    
+
+        
 @app.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
@@ -63,7 +83,7 @@ def signup():
             hashpass = m5.hexdigest()
             users = getpass(username)
             if users == 'None':
-                conn = sqlite3.connect('database.db')
+                conn = sqlite3.connect('accounts.db')
                 cursor = conn.cursor()
                 cursor.execute('INSERT INTO accounts (username, password) VALUES (?, ?)',
                             (username, hashpass))
@@ -193,7 +213,7 @@ def listusers():
         return render_template('users.html', users=users)
 
 def get_db_connection():
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('items.db')
     conn.row_factory = sqlite3.Row
     return conn
 def get_admin_connection():
