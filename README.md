@@ -13,6 +13,8 @@ A simple e-Commerce site made in python flask.
 - More Functions to wasted code
 - New admin features
 - DB structure improvements
+- Add to cart
+- Checkout and add to database for sellers to see
 
 *Extra Info*
 -Admin's login details: Admin:Admin
