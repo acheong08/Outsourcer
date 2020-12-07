@@ -13,3 +13,7 @@ A simple e-Commerce site made in python flask.
 - More Functions to wasted code
 - New admin features
 - DB structure improvements
+
+*Extra Info*
+-Admin's login details: Admin:Admin
+-All hashes are in MD5
