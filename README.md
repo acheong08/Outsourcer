@@ -17,5 +17,11 @@ A simple e-Commerce site made in python flask.
 - Checkout and add to database for sellers to see
 
 *Extra Info*
--Admin's login details: Admin:Admin
--All hashes are in MD5
+- Admin's login details: Admin:Admin
+- All hashes are in MD5
+
+**Installation Requirements**
+- Python3
+- Pip3
+- Python Flask
+- Hashlib
