@@ -5,7 +5,7 @@ Store | Outsourcer
 {% block heading %}
 <div class='container'>
 <center>
-<h1 class='text-primary'>Home</h1>
+<h1 class='text-primary'>{{currentcat}}</h1>
 </center>
 </div>
 {% endblock %}
@@ -19,11 +19,11 @@ Store | Outsourcer
 <img src="/static/img/{{item['pic']}}" id='constrainpic'/>
 </div>
 </center>
-<center><h4 class="itemtitle">{{item['name']}}</h4></center>
+<center><h4 class="itemtitle">{{item['name']}}  (ID: {{item['id']}})</h4></center>
 <div class='iteminfo'>
 <p>{{item['details']}}</p>
 </div>
-<h6 id='code'>Code: {{item['id']}}</h6>
+<pre id='code'>{{item['contact']}}</pre>
 <h6 id='price'>${{item['price']}}</h6>
 </div>
 {% endfor %}

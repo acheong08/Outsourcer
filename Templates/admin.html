@@ -3,7 +3,6 @@
 {% block title %}
 Admin | Outsourcer
 {% endblock %}
-
 {% block content %}
 
 <div class='container-sm'>
@@ -17,10 +16,10 @@ Admin | Outsourcer
 <div class='container'>
 <h4>Delete User</h4>
 <form action="/admin/action" method="POST">
-  <input type="hidden" name="actionType" value="DELUSER">
+  <input type="hidden" name="actionType" value="DELUSER"/>
   <div class='form-group'>
     <label for="user"><h6>Username: </h6></label>
-    <input type="text" class="form-control" name="deluser" placeholder="Enter username" id="user">
+    <input type="text" class="form-control" name="deluser" placeholder="Enter username" id="user"/>
     </div>
     <button type="submit" class="btn btn-warning">Delete</button>
   </form>
@@ -57,6 +56,18 @@ Admin | Outsourcer
   <div class='form-group'>
     <label for="user"><h6>Username: </h6></label>
     <input type="text" class="form-control" name="adminuser" placeholder="Enter username" id="user">
+    </div>
+    <button type="submit" class="btn btn-danger">DELETE</button>
+  </form>
+</div>
+<!--Delete item-->
+<div class='container'>
+<h4>Delete Listing</h4>
+<form action="/admin/action" method="POST">
+  <input type="hidden" name="actionType" value="DELITEM">
+  <div class='form-group'>
+    <label for="id"><h6>ID: </h6></label>
+    <input type="number" class="form-control" name="id" placeholder="Listing ID" id="id">
     </div>
     <button type="submit" class="btn btn-danger">DELETE</button>
   </form>

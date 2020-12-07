@@ -1,0 +1,63 @@
+{% extends 'sellbase.html' %}
+
+{% block title %}
+Sell | Outsourcer
+{% endblock %}
+
+{% block content %}
+  <div class='container-sm'>
+  <h1>Source Lister (Sell / Promote)</h1>
+  </div>
+  <!--Divider-->
+  <br>
+  <div class="h-divider">
+  </div>
+
+<div class='container'>
+  <h2>Source Information</h2>
+  <form action="/sell" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="actionType" value='ADDITEM'/>
+    <label for="name"><h6>Item Name: </h6></label>
+    <input type="text" class="form-control" name="iname" placeholder="Enter item name" id="name"/>
+    <!--Divider-->
+    <br>
+    <div class="h-divider">
+    </div>
+
+    <label for="details"><h6>Item details: </h6></label>
+    <textarea name="idetails" id='details' placeholder="Details" rows='10' cols="120" maxlength="500"></textarea>
+    <!--Divider-->
+    <br>
+    <div class="h-divider">
+    </div>
+    <label for="category"><h6>Item category: </h6></label>
+    <br>
+    <input name="icat" id="category" list="currentcats"/>
+    <datalist id='currentcats'>
+      {% for cats in categories %}
+  <option value="{{cats['name']}}">{{cats['name']}}</option>
+  {% endfor %}
+  </datalist>
+<!--Divider-->
+<br>
+<div class="h-divider">
+</div>
+
+<label for="price"><h6>Item price: </h6></label>
+<input type="text" class="form-control" name="iprice" placeholder="Enter item price" id="price"/>
+<!--Divider-->
+<br>
+<div class="h-divider">
+</div>
+
+<label for="pic"><h6>Item picture: </h6></label>
+<br>
+<input type='file' name='ipic' id='pic'>
+<br>
+<label for="contact"><h6>Seller's Contact: </h6></label>
+<input type='text' name='icontact' placeholder="Contact" id='contact'/>
+<br>
+<input type='submit' class='btn btn-primary' value='Submit'/>
+</form>
+
+{% endblock %}

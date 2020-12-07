@@ -8,7 +8,7 @@ with open('categories.sql') as f:
 
 cur = connection.cursor()
 cur.execute("INSERT INTO categories (name) VALUES (?)",
-            ('Organic Food',)
+            ('Food',)
             )
 connection.commit()
 connection.close()

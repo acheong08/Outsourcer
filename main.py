@@ -4,9 +4,14 @@ from flask import Flask, render_template, request, url_for, flash, redirect, mak
 from werkzeug.exceptions import abort
 import os.path
 import hashlib
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'c40a650584b50cb7d928f44d58dcaffc'
+app.config['UPLOAD_FOLDER'] = 'static/img/'
+app.config['MAX_CONTENT_PATH'] = 100000
+
+
 def getpass(username):
     conn = sqlite3.connect('accounts.db')
     cursor = conn.cursor()
@@ -23,14 +28,14 @@ def getitems():
 def getcats():
     conn = sqlite3.connect('categories.db')
     conn.row_factory = sqlite3.Row
-    return conn
+    cats = conn.execute('SELECT * FROM categories ORDER BY name ASC').fetchall()
+    conn.close()
+    return cats
 
 @app.route('/')
 def index():
     if 'username' in session:
-        conn = getcats()
-        cats = conn.execute('SELECT * FROM categories').fetchall()
-        conn.close
+        cats = getcats()
         return render_template('home.html', account=session['username'], categories=cats)
     else:
         return render_template('login.html')
@@ -39,15 +44,57 @@ def index():
 def shop():
         if 'username' in session:
             conn = getitems()
-            items = conn.execute('SELECT * FROM items').fetchmany(5)
+            items = conn.execute('SELECT * FROM items ORDER BY id DESC').fetchall()
             conn.close()
+            cats = getcats()
             return render_template('store.html', items=items, categories=cats)
         else:
             return redirect(url_for('index'))
-@app.route('/shop/<int:cat_id>')
-def shopcat(cat_id):
-    
 
+@app.route('/shop/<string:cat_name>')
+def shopcat(cat_name):
+    if 'username' in session:
+        conn = getitems()
+        items = conn.execute('SELECT * FROM items WHERE category = ? ORDER BY id DESC',
+                             (cat_name,)).fetchall()
+        conn.close()
+        catconn = sqlite3.connect('categories.db')
+        catconn.row_factory = sqlite3.Row
+        cats = catconn.execute('SELECT * FROM categories ORDER BY name ASC').fetchall()
+        catconn.close()
+        return render_template('store.html', items=items, categories=cats, currentcat=cat_name)
+@app.route('/sell', methods=('GET', 'POST'))
+def seller():
+    if 'username' in session and request.method == 'GET':
+        cats = getcats()
+        return render_template('sell.html', categories=cats)
+    elif 'username' in session and request.method == 'POST':
+        cats = getcats()
+        iname = request.form['iname']
+        idetails = request.form['idetails']
+        icat = request.form['icat']
+        iprice = request.form['iprice']
+        icontact = request.form['icontact']
+        f = request.files['ipic']
+        ipic = secure_filename(f.filename)
+        f.save("static/img/"+secure_filename(f.filename))
+        connection = sqlite3.connect('items.db')
+        cur = connection.cursor()
+        cur.execute("INSERT INTO items (name, details, contact, category, price, pic) VALUES (?, ?, ?, ?, ?, ?)",
+                    (iname, idetails, icontact, icat, iprice, ipic))
+        connection.commit()
+        connection.close()
+        if icat not in cats:
+            conn = sqlite3.connect('categories.db')
+            cur = conn.cursor()
+            cats = cur.execute('INSERT INTO categories (name) VALUES (?)',
+                               (icat,))
+            conn.commit()
+            conn.close()
+        flash("Success")
+        return redirect(url_for('index'))
+    else:
+        return redirect(url_for('index'))
         
 @app.route('/login', methods=('GET', 'POST'))
 def login():
@@ -184,6 +231,15 @@ def adminAction():
                 flash('Success')
             else:
                 flash('User Exists')
+        elif actionType == 'DELITEM':
+            itemID = request.form['id']
+            conn = sqlite3.connect('items.db')
+            cur = conn.cursor()
+            cur.execute('DELETE FROM items WHERE id = ?',
+                           (itemID,))
+            conn.commit()
+            conn.close()
+            flash("Item Deleted")
         elif actionType == 'DELADMIN':
             username = request.form['adminuser']
             exists = getadmins(username)
@@ -211,9 +267,11 @@ def listusers():
         users = cursor.execute('SELECT * FROM accounts').fetchall()
         conn.close()
         return render_template('users.html', users=users)
+    else:
+        return redirect(url_for('admin'))
 
 def get_db_connection():
-    conn = sqlite3.connect('items.db')
+    conn = sqlite3.connect('accounts.db')
     conn.row_factory = sqlite3.Row
     return conn
 def get_admin_connection():
@@ -228,3 +286,12 @@ def listadmins():
         users = cursor.execute('SELECT * FROM accounts').fetchall()
         conn.close()
         return render_template('adminlist.html', users=users)
+    else:
+        return redirect(url_for('admin'))
+
+
+
+
+
+    
+app.run(host = "0.0.0.0")

@@ -90,10 +90,13 @@
    <h5 class="navbar-brand">Outsourcer</h5>
  </li>
  <li class="nav-item">
-   <a class="nav-link" href="/">Home</a>
+   <a class="nav-link" href="/shop">Shop</a>
  </li>
  <li class="nav-item">
    <a class="nav-link" href="/">About</a>
+ </li>
+ <li class="nav-item">
+   <a class="nav-link" href="/sell">Sell</a>
  </li>
 </ul>
 <ul class="navbar-nav ml-auto">
@@ -120,7 +123,7 @@
 </li>
 {% for cats in categories %}
 <li class="nav-item">
- <h6 class="navbar-active"><a href="/shop/{{cats['id']}}">{{cats['name']}}</a></h6>
+ <h6 class="navbar-active"><a href="/shop/{{cats['name']}}">{{cats['name']}}</a></h6>
 </li>
 {% endfor %}
 </ul>
